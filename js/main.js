@@ -3479,7 +3479,7 @@ let elList = document.querySelector("#list")
 let elLikeList = document.querySelector("#list2")
 let elTemplate = document.querySelector("#template").content
 let elResult = document.querySelector("#result")
-let elForm = document.querySelectorAll("#form")
+let elForm = document.querySelector("#form")
 
 let newPokemons = pokemons.map((item)=> {
     return{
@@ -3495,7 +3495,6 @@ let newPokemons = pokemons.map((item)=> {
 })
 
 let localLiked = JSON.parse(localStorage.getItem("liked"))
-
 let liked 
 
 if (localLiked) {
@@ -3504,7 +3503,7 @@ if (localLiked) {
     liked = []
 }
 
-function render(array=[] , wrapper) {
+function render(array , wrapper) {
     wrapper.innerHTML = null
     elResult.textContent = array.length
     let fragment = document.createDocumentFragment()
@@ -3513,10 +3512,10 @@ function render(array=[] , wrapper) {
         let template = elTemplate.cloneNode(true)
         
         template.querySelector(".image").src = array[i].image
-        template.querySelector(".name").textContent = array[i].name
-        template.querySelector(".weight").textContent = array[i].weight
-        template.querySelector(".height").textContent = array[i].height
-        template.querySelector(".type").textContent = array[i].type
+        template.querySelector("#name").textContent = array[i].name
+        template.querySelector("#weight").textContent = array[i].weight
+        template.querySelector("#height").textContent = array[i].height
+        template.querySelector("#type").textContent = array[i].type
         template.querySelector(".btn-like").dataset.likeId = array[i].num
         
         fragment.appendChild(template)
@@ -3525,3 +3524,24 @@ function render(array=[] , wrapper) {
 }
 
 render(newPokemons , elList);
+
+let types = []
+
+function findTypes(array) {
+    for (const item of array) {
+        for (const itemCategory of item.type) {
+			if (!types.includes(itemCategory)) {
+				types.push(itemCategory)
+			}
+        }
+    }
+    console.log(types);
+}
+
+findTypes(newPokemons)
+
+elForm.addEventListener("submit" , (evt) =>{
+    evt.preventDefault()
+
+
+})
