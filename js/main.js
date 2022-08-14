@@ -3493,7 +3493,8 @@ let newPokemons = pokemons.map((item)=> {
         weight: item.weight,
         height: item.height,
         id: item.id,
-        isLiked: "Like"
+        isLiked: "Like",
+        isColor:"white"
     }
 })
 
@@ -3526,6 +3527,7 @@ function render(array , wrapper) {
         template.querySelector("#type").textContent = array[i].type
         template.querySelector(".btn-like").dataset.likeId = array[i].num
         template.querySelector(".btn-like").textContent = `${array[i].isLiked}`
+        template.querySelector(".btn-like").style.backgroundColor = `${array[i].isColor}`
         template.querySelector(".btn-like").classList.add(`like${array[i].num}`)
         
         fragment.appendChild(template)
@@ -3617,10 +3619,11 @@ elWrapper.addEventListener("click" , function (evt) {
             return item.num == current
         })) {
             currentEl.textContent = "Liked"
-            currentEl.backgroundColor = "aqua"
+            currentEl.style.backgroundColor = "aqua"
             for (let i = 0; i < newPokemons.length; i++) {
                 if (newPokemons[i].num == current) {
                     newPokemons[i].isLiked = "Liked"
+                    newPokemons[i].isColor = "aqua"
                     localStorage.setItem("newPokemons" , JSON.stringify(newPokemons))
                 }
             }
@@ -3631,16 +3634,19 @@ elWrapper.addEventListener("click" , function (evt) {
                 return item.num == current
             })
             currentPok.isLiked = "Liked"
+            currentPok.isColor = "aqua"
             liked.push(currentPok)
             localStorage.setItem("liked" , JSON.stringify(liked))
         }else{
             currentEl.textContent = "Like"
+            currentEl.style.backgroundColor = "white"
             let currentPok =  newPokemons.find(function (item) {
                 return item.num == current
             })
             for (let i = 0; i < newPokemons.length; i++) {
                 if (newPokemons[i].num == current) {
                     newPokemons[i].isLiked = "Like"
+                    newPokemons[i].isColor = "white"
                     localStorage.setItem("newPokemons" , JSON.stringify(newPokemons))
                 }
             }
