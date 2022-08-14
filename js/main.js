@@ -3498,12 +3498,17 @@ let newPokemons = pokemons.map((item)=> {
 })
 
 let localLiked = JSON.parse(localStorage.getItem("liked"))
+let localPokemons = JSON.parse(localStorage.getItem("newPokemons"))
 let liked 
 
 if (localLiked) {
     liked = localLiked
 }else{
     liked = []
+}
+
+if (localPokemons) {
+    newPokemons = localPokemons
 }
 
 function render(array , wrapper) {
@@ -3613,6 +3618,12 @@ elWrapper.addEventListener("click" , function (evt) {
         })) {
             currentEl.textContent = "Liked"
             currentEl.backgroundColor = "aqua"
+            for (let i = 0; i < newPokemons.length; i++) {
+                if (newPokemons[i].num == current) {
+                    newPokemons[i].isLiked = "Liked"
+                    localStorage.setItem("newPokemons" , JSON.stringify(newPokemons))
+                }
+            }
             let currentPok =  newPokemons.find(function (item) {
                 return item.num == current
             })
@@ -3627,6 +3638,12 @@ elWrapper.addEventListener("click" , function (evt) {
             let currentPok =  newPokemons.find(function (item) {
                 return item.num == current
             })
+            for (let i = 0; i < newPokemons.length; i++) {
+                if (newPokemons[i].num == current) {
+                    newPokemons[i].isLiked = "Like"
+                    localStorage.setItem("newPokemons" , JSON.stringify(newPokemons))
+                }
+            }
             currentPok.isLiked = "Like"
             let index 
             for (let i = 0; i < liked.length; i++) {
