@@ -3480,6 +3480,9 @@ let elLikeList = document.querySelector("#list2")
 let elTemplate = document.querySelector("#template").content
 let elResult = document.querySelector("#result")
 let elForm = document.querySelector("#form")
+let elType = document.querySelector(".type")
+let elShow = document.querySelector("#showLiked")
+let elWrapper = document.querySelector(".listWrapper")
 
 let newPokemons = pokemons.map((item)=> {
     return{
@@ -3490,7 +3493,7 @@ let newPokemons = pokemons.map((item)=> {
         weight: item.weight,
         height: item.height,
         id: item.id,
-        isLiked: true
+        isLiked: "Like"
     }
 })
 
@@ -3517,6 +3520,8 @@ function render(array , wrapper) {
         template.querySelector("#height").textContent = array[i].height
         template.querySelector("#type").textContent = array[i].type
         template.querySelector(".btn-like").dataset.likeId = array[i].num
+        template.querySelector(".btn-like").textContent = `${array[i].isLiked}`
+        template.querySelector(".btn-like").classList.add(`like${array[i].num}`)
         
         fragment.appendChild(template)
     }
@@ -3530,18 +3535,111 @@ let types = []
 function findTypes(array) {
     for (const item of array) {
         for (const itemCategory of item.type) {
-			if (!types.includes(itemCategory)) {
-				types.push(itemCategory)
-			}
+            if (!types.includes(itemCategory)) {
+                types.push(itemCategory)
+            }
         }
     }
-    console.log(types);
 }
 
 findTypes(newPokemons)
 
+function renderTypes(array) {
+    let fragment = document.createDocumentFragment()
+    for (let i = 0; i < array.length; i++) {
+        let newOption = document.createElement("option")
+        newOption.value = array[i]
+        newOption.textContent = array[i]
+        fragment.appendChild(newOption)
+    }
+    elType.appendChild(fragment)
+}
+renderTypes(types.sort())
+
+
+let filteredArray = []
 elForm.addEventListener("submit" , (evt) =>{
     evt.preventDefault()
+    
+    
+    filteredArray = []
+    let elName = document.querySelector(".name").value
+    let elWeight = document.querySelector(".weight").value
+    let elHeight = document.querySelector(".height").value
+    let elType = document.querySelector(".type").value
+    let elSort = document.querySelector(".sort").value
+    
+    
+    for (const item of newPokemons) {
+        let isTrue = elType == "all"? true: elType == item.type 
+        let validate = Number(item.height.split(" ")[0]) >= elHeight && Number(item.weight.split(" ")[0]) >= elWeight && isTrue && item.name.search(elName) !=  -1
+        if (validate) {
+            filteredArray.push(item)
+        }
+    }
+    
+    
+    filteredArray.sort(function(a , b) {
+        if (elSort == "az") {
+            return a === b ? 0 : (a.name < b.name) ? -1 : 1;
+        }
+        if (elSort == "za") {
+            return a === b ? 0 : (b.name < a.name) ? -1 : 1;
+        }
+        if (elSort == "weighthl") {
+            return Number(b.weight.split(" ")[0]) - Number(a.weight.split(" ")[0])
+        }
+        if (elSort == "weightlh") {
+            return Number(a.weight.split(" ")[0]) - Number(b.weight.split(" ")[0])
+        }
+        if (elSort == "heighthl") {
+            return Number(b.height.split(" ")[0]) - Number(a.height.split(" ")[0])
+        }
+        if (elSort == "heightlh") {
+            return Number(a.height.split(" ")[0]) - Number(b.height.split(" ")[0])
+        }
+        
+    })
+    render(filteredArray , elList)
+})
 
 
+elWrapper.addEventListener("click" , function (evt) {
+    let currentEl = evt.target
+    let current = currentEl.dataset.likeId
+    if (current) {
+        if (!liked.find((item)=> {
+            return item.num == current
+        })) {
+            currentEl.textContent = "Liked"
+            currentEl.backgroundColor = "aqua"
+            let currentPok =  newPokemons.find(function (item) {
+                return item.num == current
+            })
+            newPokemons.find(function (item) {
+                return item.num == current
+            })
+            currentPok.isLiked = "Liked"
+            liked.push(currentPok)
+            localStorage.setItem("liked" , JSON.stringify(liked))
+        }else{
+            currentEl.textContent = "Like"
+            let currentPok =  newPokemons.find(function (item) {
+                return item.num == current
+            })
+            currentPok.isLiked = "Like"
+            let index 
+            for (let i = 0; i < liked.length; i++) {
+                if (currentPok.num == liked[i].num) {
+                    index = liked.indexOf(liked[i])
+                }
+            }
+            liked.splice(index , 1)
+            localStorage.setItem("liked" , JSON.stringify(liked))
+        }
+    }})
+
+elShow.addEventListener("click" , function(evt) {
+    elList.innerHTML = null
+    render(liked , elLikeList)
 })

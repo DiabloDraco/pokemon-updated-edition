@@ -11,7 +11,7 @@
 </head>
 <body>
 	
-<body class="bg-warning">
+<body class="bg-warning body">
 	
 	<a href="./index.html"><img class="logo container align-items-center d-flex" src="./images/pokemon_logo.png"></a>
 	<form id="form" class="mt-5 d-flex  flex-column  flex-lg-row justify-content-center text-center mx-auto">
@@ -34,7 +34,7 @@
 	</form>
 	<button id="showLiked" class="container d-flex justify-content-center align-items-center text-center w-auto mt-5 btn btn-danger">Show liked cards</button>
 	<p class="container text-success fs-3 text-center mt-5">Result: <span id="result">0</span></p>
-	<div class="container d-flex flex-column justify-content-center align-items-center">
+	<div class="container d-flex flex-column justify-content-center align-items-center listWrapper">
 		<ul id="list" class="row list-unstyled d-flex justify-content-center w-100 col-12 mt-3">
 		</ul>
 		<ul id="list2" class="row list-unstyled d-flex justify-content-center w-100 col-12 mt-3">
@@ -42,13 +42,13 @@
 	</div>
 	
 	<template id="template">
-		<li class="col-lg-3 mb-5 col-12 align-items-center d-flex flex-column justify-content-center mb-3">
+		<li class="col-lg-3 mb-5 col-12 align-items-center d-flex flex-column justify-content-center mb-3 cardcha">
 			<img class="mb-3 pt-3 image" src="http://www.serebii.net/pokemongo/pokemon/001.png">
 			<h3 id="name" class="text ">Bulbasaur</h3>
 			<p id="type" class="text1 ">Grass , Poison</p>
 			<p id="height" class="text1 ">0.71 m</p>
 			<p id="weight" class="text1 ">6.9 kg</p>
-			<button class="rounded button btn-like">Like</button>
+			<button class="rounded button btn-like ">Like</button>
 		</li>
 	</template>
 	<script src="./js/main.js"></script>
