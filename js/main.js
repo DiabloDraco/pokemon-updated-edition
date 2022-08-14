@@ -3577,13 +3577,13 @@ elForm.addEventListener("submit" , (evt) =>{
     let elSort = document.querySelector(".sort").value
     
     
-    for (const item of newPokemons) {
+    filteredArray = newPokemons.filter(function (item) {
         let isTrue = elType == "all"? true: elType == item.type 
         let validate = Number(item.height.split(" ")[0]) >= elHeight && Number(item.weight.split(" ")[0]) >= elWeight && isTrue && item.name.search(elName) !=  -1
-        if (validate) {
-            filteredArray.push(item)
-        }
-    }
+        return validate
+    })
+    
+    
     
     
     filteredArray.sort(function(a , b) {
@@ -3661,8 +3661,9 @@ elWrapper.addEventListener("click" , function (evt) {
             localStorage.setItem("liked" , JSON.stringify(liked))
         }
     }})
-
-elShow.addEventListener("click" , function(evt) {
-    elList.innerHTML = null
-    render(liked , elLikeList)
-})
+    
+    elShow.addEventListener("click" , function(evt) {
+        elList.innerHTML = null
+        render(liked , elLikeList)
+    })
+    
